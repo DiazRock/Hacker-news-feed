@@ -6,32 +6,25 @@ volumes:
 services: 
   nestjs:
     build:
-      context: .
-      dockerfile: ./nestjs/Dockerfile
+      context: ./nestjs
+      dockerfile: ./Dockerfile
     ports:
-      - "3000:8000"
+      - "0.0.0.0:7000:3000"
     volumes:
       - ./backend-service:/usr/src/app
-    command: /start
-    image: nestjs_backend_service
   
   reactjs:
     build: 
-      context: .
-      dockerfile: ./reactjs/Dockerfile
+      context: ./reactjs
+      dockerfile: ./Dockerfile
     ports:
-      - "3000:3000"
+      - "0.0.0.0:5000:3000"
     volumes: 
       - ./client-service:/app
-    command: yarn start
-    image: reactjs_client_service
 
   mongodb:
-    build:
-      context: .
-      dockerfile: ./mongodb/Dockerfile
     ports:
-      - "27017:27017"
+      - "0.0.0.0:27018:27017"
     volumes:
       - local_mongo_data:/var/lib/mongodb/data
-    image: mongodb_service
+    image: mongo
