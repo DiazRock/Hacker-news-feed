@@ -21,18 +21,28 @@ export class BlogService {
     return await this.model.findById(id).exec();
     }
 
-    async create(createBlogDto: CreateblogDto): Promise<Blog> {
-        console.log('Inside create')
-        return await new this.model({
+    async create(createBlogDto: CreateblogDto) {
+        
+        return new this.model({
           ...createBlogDto
-        }).save();
+        }).save( (err, data) => {
+          if (data) {
+            console.log('It works')
+            return data
+          }
+          else {
+            console.log('Something went wrong')
+            console.log(err)
+            return null
+          }
+        } );
       }
     
     async delete(id: string): Promise<Blog> {
     return await this.model.findByIdAndDelete(id).exec();
     }
 
-    @Cron('5 * * * * *')
+    @Cron('0 0 * * * *')
     async requestHackerNews() {
       const response= await this.httpService.get('https://hn.algolia.com/api/v1/search_by_date?query=nodejs').toPromise()
       response.data.hits.forEach(async (element: { [x: string]: any; }) => {
