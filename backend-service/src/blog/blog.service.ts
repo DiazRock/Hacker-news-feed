@@ -14,7 +14,7 @@ export class BlogService {
     }
 
     async findAll(): Promise<Blog[]> {
-        return await this.model.find().exec();
+        return await this.model.find().sort({createdAt: 'desc'}).exec();
       }
     
     async findOne(id: string): Promise<Blog> {
@@ -44,20 +44,23 @@ export class BlogService {
 
     @Cron('0 0 * * * *')
     async requestHackerNews() {
-      const response= await this.httpService.get('https://hn.algolia.com/api/v1/search_by_date?query=nodejs').toPromise()
-      response.data.hits.forEach(async (element: { [x: string]: any; }) => {
-        if ( !element['title'] || !element['story_title']){
-            await this.create( <CreateblogDto> {
-                title: element ['title'],
-                story_title: element ['story_title'],
-                url: element ['url'],
-                story_url: element ['story_url'],
-                author:  element ['author'],
-                createdAt: element ['created_at']
-                }
-             )
+      await this.httpService.get('http://hn.algolia.com/api/v1/search_by_date?query=nodejs').toPromise().then (
+        (response) => {
+          response.data.hits.forEach(async (element: { [x: string]: any; }) => {
+            if ( !element['title'] || !element['story_title']){
+                await this.create( <CreateblogDto> {
+                    title: element ['title'],
+                    story_title: element ['story_title'],
+                    url: element ['url'],
+                    story_url: element ['story_url'],
+                    author:  element ['author'],
+                    createdAt: element ['created_at']
+                    }
+                 )
+            }
+            
+          });
         }
-        
-      });
+      ).catch(err => console.log(err))
     }
 }
