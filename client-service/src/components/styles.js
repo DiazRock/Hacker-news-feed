@@ -29,6 +29,9 @@ export const PostRow = styled.article`
     width: 100%;
     table-layout: fixed;
     border-spacing: 10px;
+    &:hover {
+        background-color: #fafafafa;
+    }
 `
 
 export const RowText = styled.div`
@@ -56,3 +59,14 @@ export const DateText = styled.p`
     }
 `
 
+const base = styled.a``
+
+export const Anchor = styled(base)`
+    display:block;
+    color: black;
+    text-decoration: none;
+    &:hover {
+        background: black;
+    };
+    
+`
