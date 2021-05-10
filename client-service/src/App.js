@@ -2,25 +2,48 @@ import './App.css';
 import { GlobalStyle } from './GlobalStyles'
 import { Header } from './components/header'
 import { Row } from './components/row'
-import { post_fetcher } from './api_requester/post_fetcher'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
 
+const renderFeed = (feed) => {
+  const items = []
+  for (const [, value] of feed.entries()) {
+    const title = value.title ? value.title: value.story_title
+    const author = value.author
+    const url = value.story_url ? value.story_url: value.url 
+    const date = value.createdAt
+    items.push(
+      <div>
+        <Row 
+        title={ title }
+        url = { url }
+        author={ author }
+        date_time= 'Prueba'
+        />
+        <hr />
+      </div> 
+    )
+  }
+  return items
+}
 
 function App() {
-  const feed = post_fetcher()
+  const [feed, setFeed] = useState([])
+  useEffect(() => {
+    axios.get('http://localhost:7000/blog')
+    .then( response => setFeed(response.data) )
+  }, [])
+
+  const items= renderFeed(feed)
+
   return (
     <div>
       <Header />
       <section>
-        <Row 
-          title="HN Feed pablito clavo un clavito" 
-          author="Lindoro"
-          date_time="La cosa por acá"
-
-        />
+        { items }
       </section>
       
-      <hr />
       <GlobalStyle />
     </div>
   );
