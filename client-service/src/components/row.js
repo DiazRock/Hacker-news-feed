@@ -1,20 +1,24 @@
 import React from 'react';
-import { PostRow, RowText, AuthorText, DateText} from './styles';
+import { Anchor, PostRow, RowText, AuthorText, DateText} from './styles';
 
-export const Row = ({ title, author, date_time }) => (
-    <PostRow>
-        <RowText>
-            { title }
-            
-            <AuthorText>
-                { author }
-            </AuthorText>
-        </RowText>
+export const Row = ({ title, url, author, date_time }) => (
+    <Anchor href={ url }>
+        <PostRow>
+            <RowText>
+                { title }
+                
+                <AuthorText>
+                    { author }
+                </AuthorText>
+            </RowText>
 
-        <RowText>
-            <DateText>
-                { date_time }
-            </DateText>
-        </RowText>
-    </PostRow>
+            <RowText>
+                <DateText>
+                    { date_time }
+                </DateText>
+            </RowText>
+        
+        </PostRow>
+    </Anchor>
+    
 )
