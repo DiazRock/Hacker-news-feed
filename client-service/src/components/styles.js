@@ -30,7 +30,7 @@ export const PostRow = styled.article`
     table-layout: fixed;
     border-spacing: 10px;
     &:hover {
-        background-color: #fafafafa;
+        background-color: gray;
     }
 `
 
@@ -43,6 +43,11 @@ export const RowText = styled.div`
         font-size: 1rem;
     }
     
+`
+
+export const DeleteIcon = styled.div`
+    display: inline;
+    margin-left: 10%;
 `
 
 export const AuthorText = styled.p`
@@ -65,8 +70,5 @@ export const Anchor = styled(base)`
     display:block;
     color: black;
     text-decoration: none;
-    &:hover {
-        background: black;
-    };
     
 `
