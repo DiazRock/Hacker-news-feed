@@ -19,11 +19,6 @@ export class BlogController {
         return await this.service.findAll();
     }
 
-    @Get(':id')
-    async find(@Param('id') id: string) {
-        return await this.service.findOne(id);
-    }
-
     @Post()
     async create(@Body() createBlogDto: CreateblogDto) {
         return await this.service.create(createBlogDto);
@@ -33,6 +28,4 @@ export class BlogController {
     async delete(@Param('id') id : string) {
         return await this.service.delete(id);
     }
-
-
 }
