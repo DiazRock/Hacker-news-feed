@@ -9,18 +9,13 @@ import { AxiosResponse } from 'axios';
 
 @Injectable()
 export class BlogService {
-    constructor(@InjectModel(Blog.name) private readonly model: Model<BlogDocument>,
-                private httpService: HttpService) {
+    constructor(@InjectModel(Blog.name) private readonly model: Model<BlogDocument>) {
     }
 
     async findAll(): Promise<Blog[]> {
         return await this.model.find().sort({createdAt: 'desc'}).exec();
       }
     
-    async findOne(id: string): Promise<Blog> {
-    return await this.model.findById(id).exec();
-    }
-
     async create(createBlogDto: CreateblogDto) {
         
         return new this.model({
@@ -44,7 +39,8 @@ export class BlogService {
 
     @Cron('0 0 * * * *')
     async requestHackerNews() {
-      await this.httpService.get('http://hn.algolia.com/api/v1/search_by_date?query=nodejs').toPromise().then (
+      const httpService = new HttpService()
+      httpService.get('http://hn.algolia.com/api/v1/search_by_date?query=nodejs').toPromise().then (
         (response) => {
           response.data.hits.forEach(async (element: { [x: string]: any; }) => {
             if ( !element['title'] || !element['story_title']){
